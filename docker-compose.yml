@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:16-alpine
     container_name: coretrack-db
     restart: always
     environment:
@@ -12,11 +12,25 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./supabase/migrations:/docker-entrypoint-initdb.d
+      - ./db/init.sql:/docker-entrypoint-initdb.d/99-leakage.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U coretrack"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  app:
+    build: .
+    container_name: coretrack-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://coretrack:coretrack123@db:5432/coretrack
+    depends_on:
+      db:
+        condition: service_healthy
 
   pgadmin:
     image: dpage/pgadmin4
