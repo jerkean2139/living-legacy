@@ -247,7 +247,7 @@ export interface GainsCalculation {
 export function calculateGains(inputs: GainsInputs): GainsCalculation {
   const num = (key: string, fallback: number = 0) => {
     const val = parseFloat(inputs[key] || '');
-    return isNaN(val) ? fallback : val;
+    return isNaN(val) ? fallback : Math.max(0, val);
   };
 
   // ── Parse inputs ──
@@ -300,7 +300,7 @@ export function calculateGains(inputs: GainsInputs): GainsCalculation {
 
   // Revenue multiplier based on what they'd do with recovered time
   const revenuePerHourOfNeedleMover: Record<string, number> = {
-    sales: avgGrossSale / (leadToSaleDays / 30 * 20), // ~deals closed per work hour
+    sales: avgGrossSale / (Math.max(leadToSaleDays, 1) / 30 * 20), // ~deals closed per work hour
     partnerships: avgClientValue * 0.1, // partnerships yield referral value
     marketing: avgGrossSale * leadConversionRate * 0.5, // content drives leads
     product: avgClientValue * 0.08, // new offerings create long-term value

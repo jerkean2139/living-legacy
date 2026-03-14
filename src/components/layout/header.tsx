@@ -11,7 +11,6 @@ export function Header() {
           </Link>
           
           <nav className="flex items-center gap-6">
-            <Link to="/leakage" className="text-gray-600 hover:text-[#FF0000] font-medium">Leakage Calculator</Link>
             <Link to="/assessment" className="text-gray-600 hover:text-[#FF0000]">Talent Assessment</Link>
             <Link to="/guide" className="text-gray-600 hover:text-[#FF0000]">User Guide</Link>
             <Link to="/reports" className="text-gray-600 hover:text-[#FF0000]">Reports</Link>

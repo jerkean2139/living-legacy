@@ -677,9 +677,9 @@ export function LeakageAssessment() {
                       </button>
                       <button
                         onClick={handleGainsNext}
-                        disabled={!gainsInputs[gainsQ.id] && gainsQ.inputType !== 'select'}
+                        disabled={!gainsInputs[gainsQ.id]}
                         className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          !gainsInputs[gainsQ.id] && gainsQ.inputType !== 'select'
+                          !gainsInputs[gainsQ.id]
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-emerald-600 text-white hover:bg-emerald-700'
                         }`}
