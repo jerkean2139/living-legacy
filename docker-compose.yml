@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: leakage_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: leakage_user
+      POSTGRES_PASSWORD: leakage_pass_2024
+      POSTGRES_DB: leakage_assessment
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leakage_user -d leakage_assessment"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: leakage_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://leakage_user:leakage_pass_2024@db:5432/leakage_assessment
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
